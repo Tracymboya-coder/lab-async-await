@@ -1,33 +1,49 @@
+/* =========================
+   DISPLAY POSTS FUNCTION
+========================= */
+function displayPosts(posts) {
+  const ul = document.getElementById("post-list");
+  console.log(ul)
+//   ul.innerHTML = ""; // clear old content
 
-// This is equivalent to /comments?postId=1
-const base_url="https://jsonplaceholder.typicode.com/posts"
-fetch(base_url)
-  .then((response) => response.json())
-  .then((json) => console.log(json));
+  // loop through posts
+  posts.forEach(post => {
+    // create elements
+    const li = document.createElement("li");
+    const h1 = document.createElement("h1");
+    const p = document.createElement("p");
+    console.log(post)
+    // add content
+    h1.textContent = post?.title;
+    p.textContent = post?.body;
 
+    
+    // build structure
+    li.appendChild(h1);
+    li.appendChild(p);
 
-
-
-// 1. Define an async function to handle the fetch
-async function fetchAndDisplayPosts() {
-    try {
-        // 2. Await the fetch request
-      const response = await fetch('base_url');
-
-        // 3. Check if the network request was successful
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        // 4. Await the parsing of the data stream into JSON
-        const posts = await response.json();
-
-        // 5. Pass the data to your display function
-        displayPosts(posts);
-    } catch (error) {
-        console.error("Fetch process failed:", error);
-    }
+    ul.appendChild(li);
+  });
 }
+
+/* =========================
+   FETCH DATA (ASYNC/AWAIT)
+========================= */
+async function getPosts() {
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+    const posts = await response.json();
+
+    displayPosts(posts); // call function after fetch
+  } catch (error) {
+    console.log("Error fetching posts:", error);
+  }
+}
+
+/* =========================
+   RUN APP
+========================= */
+getPosts();
 
 
 // Write your code here!
